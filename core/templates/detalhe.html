@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{{ item.nome }} - StudyCode{% endblock %}
+{% block title %}{{ item.nome }} Code-Save - Detalhes{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -54,7 +54,7 @@
                 <div class="d-flex justify-content-between mt-4">
                     <a href="javascript:history.back()" class="btn btn-outline-secondary">Voltar</a>
                     <div>
-                        <a href="{% url 'core:editar' item.id %}" class="btn btn-warning me-2">Editar</a>
+                        <a class="btn btn-warning me-2">Editar</a>
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
                             Excluir
                         </button>
@@ -72,7 +72,7 @@
             <div class="card-body">
                 <div class="list-group">
                     {% for item_rel in itens_relacionados %}
-                        <a href="{% url 'core:detalhes' item_rel.id %}" class="list-group-item list-group-item-action">
+                        <a href="{% url 'core:detalhe' item_rel.id %}" class="list-group-item list-group-item-action">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1">{{ item_rel.nome }}</h5>
                                 <small>{{ item_rel.tipo }}</small>
@@ -122,7 +122,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <form method="post" action="{% url 'core:excluir' item.id %}">
+                <form method="post">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-danger">Excluir</button>
                 </form>
