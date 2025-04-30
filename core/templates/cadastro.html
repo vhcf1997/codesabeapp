@@ -10,7 +10,7 @@
                 <h2>Cadastrar Novo Item</h2>
             </div>
             <div class="card-body">
-                <form method="post" action="{% url 'cadastro' %}" id="formCadastro">
+                <form method="post" action="{% url 'core:cadastro' %}" id="formCadastro">
                     {% csrf_token %}
                     
                     <div class="mb-3">
@@ -51,7 +51,7 @@
                     </div>
                     
                     <div class="text-end mt-4">
-                        <button type="button" class="btn btn-secondary me-2" onclick="window.location.href='{% url 'index' %}'">Cancelar</button>
+                        <button type="button" class="btn btn-secondary me-2" onclick="window.location.href='{% url 'core:index' %}'">Cancelar</button>
                         <button type="submit" class="btn btn-primary">Salvar</button>
                     </div>
                 </form>

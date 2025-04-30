@@ -17,6 +17,7 @@ def main():
         ) from exc
     execute_from_command_line(sys.argv)
 
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 if __name__ == '__main__':
     main()

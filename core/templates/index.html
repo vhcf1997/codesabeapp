@@ -18,8 +18,8 @@
                     <li>Pesquisar facilmente por suas anotações usando palavras-chave</li>
                 </ul>
                 <div class="mt-4">
-                    <a href="{% url 'cadastro' %}" class="btn btn-primary me-2">Cadastrar Novo Item</a>
-                    <a href="{% url 'pesquisa' %}" class="btn btn-outline-primary">Pesquisar</a>
+                    <a href="{% url 'core:cadastro' %}" class="btn btn-primary me-2">Cadastrar Novo Item</a>
+                    <a href="{% url 'core:pesquisa' %}" class="btn btn-outline-primary">Pesquisar</a>
                 </div>
             </div>
         </div>
@@ -33,7 +33,7 @@
                 <div class="list-group">
                     {% if itens_recentes %}
                         {% for item in itens_recentes %}
-                            <a href="{% url 'detalhes' item.id %}" class="list-group-item list-group-item-action">
+                            <a href="{% url 'core:detalhe' item.id %}" class="list-group-item list-group-item-action">
                                 <div class="d-flex w-100 justify-content-between">
                                     <h5 class="mb-1">{{ item.nome }}</h5>
                                     <small>{{ item.tipo }}</small>
@@ -48,7 +48,7 @@
                 </div>
                 {% if itens_recentes %}
                     <div class="text-end mt-3">
-                        <a href="{% url 'pesquisa' %}" class="btn btn-sm btn-outline-success">Ver todos</a>
+                        <a href="{% url 'core:pesquisa' %}" class="btn btn-sm btn-outline-success">Ver todos</a>
                     </div>
                 {% endif %}
             </div>
@@ -62,7 +62,7 @@
                 <div class="tag-cloud">
                     {% if tags_populares %}
                         {% for tag in tags_populares %}
-                            <a href="{% url 'pesquisa' %}?q={{ tag.nome }}" class="tag">{{ tag.nome }}</a>
+                            <a href="{% url 'core:pesquisa' %}?q={{ tag.nome }}" class="tag">{{ tag.nome }}</a>
                         {% endfor %}
                     {% else %}
                         <p class="text-muted">Nenhuma tag cadastrada ainda.</p>
