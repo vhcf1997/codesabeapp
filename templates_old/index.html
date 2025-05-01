@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}StudyCode - Início{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h2>Bem-vindo ao StudyCode</h2>
+            </div>
+            <div class="card-body">
+                <p class="lead">Organize seus estudos de programação de forma eficiente!</p>
+                <p>Com o StudyCode, você pode:</p>
+                <ul>
+                    <li>Cadastrar comandos, funções e bibliotecas que está estudando</li>
+                    <li>Adicionar descrições detalhadas e palavras-chave</li>
+                    <li>Pesquisar facilmente por suas anotações usando palavras-chave</li>
+                </ul>
+                <div class="mt-4">
+                    <a href="{% url 'core:cadastro' %}" class="btn btn-primary me-2">Cadastrar Novo Item</a>
+                    <a href="{% url 'core:pesquisa' %}" class="btn btn-outline-primary">Pesquisar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h4>Itens Recentes</h4>
+            </div>
+            <div class="card-body">
+                <div class="list-group">
+                    {% if itens_recentes %}
+                        {% for item in itens_recentes %}
+                            <a href="{% url 'core:detalhe' item.id %}" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">{{ item.nome }}</h5>
+                                    <small>{{ item.tipo }}</small>
+                                </div>
+                                <p class="mb-1 text-truncate">{{ item.descricao }}</p>
+                                <small>{{ item.data_criacao|date:"d/m/Y" }}</small>
+                            </a>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">Nenhum item cadastrado ainda.</p>
+                    {% endif %}
+                </div>
+                {% if itens_recentes %}
+                    <div class="text-end mt-3">
+                        <a href="{% url 'core:pesquisa' %}" class="btn btn-sm btn-outline-success">Ver todos</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header bg-info text-white">
+                <h4>Tags Populares</h4>
+            </div>
+            <div class="card-body">
+                <div class="tag-cloud">
+                    {% if tags_populares %}
+                        {% for tag in tags_populares %}
+                            <a href="{% url 'core:pesquisa' %}?q={{ tag.nome }}" class="tag">{{ tag.nome }}</a>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">Nenhuma tag cadastrada ainda.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

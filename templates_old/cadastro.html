@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Code-Save - Cadastrar Item{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h2>Cadastrar Novo Item</h2>
+            </div>
+            <div class="card-body">
+                <form method="post" action="{% url 'core:cadastro' %}" id="formCadastro">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="tipo" class="form-label">Tipo *</label>
+                        <select class="form-select" id="tipo" name="tipo" required>
+                            <option value="" selected disabled>Selecione o tipo</option>
+                            <option value="comando">Comando</option>
+                            <option value="funcao">Função</option>
+                            <option value="biblioteca">Biblioteca</option>
+                            <option value="outro">Outro</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="nome" class="form-label">Nome *</label>
+                        <input type="text" class="form-control" id="nome" name="nome" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="linguagem" class="form-label">Linguagem/Tecnologia</label>
+                        <input type="text" class="form-control" id="linguagem" name="linguagem">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="descricao" class="form-label">Descrição *</label>
+                        <textarea class="form-control" id="descricao" name="descricao" rows="4" required></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="exemplo" class="form-label">Exemplo de Uso</label>
+                        <textarea class="form-control code-editor" id="exemplo" name="exemplo" rows="5"></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="tags" class="form-label">Palavras-chave (separadas por vírgula)</label>
+                        <input type="text" class="form-control" id="tags" name="tags" placeholder="Ex: python, loop, iteração">
+                        <div class="form-text">As tags ajudam a encontrar este item mais facilmente durante as pesquisas.</div>
+                    </div>
+                    
+                    <div class="text-end mt-4">
+                        <button type="button" class="btn btn-secondary me-2" onclick="window.location.href='{% url 'core:index' %}'">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        initCodeEditor();
+    });
+</script>
+{% endblock %}
