@@ -1,23 +1,14 @@
 from django.db import models
 
-
-class Item(models.Model):
-    nome = models.CharField(max_length=100)
-    descricao = models.TextField()
-    exemplo = models.TextField(blank=True, null=True)
-    linguagem = models.CharField(max_length=50, blank=True, null=True)
-    tipo = models.CharField(max_length=50)
-    data_criacao = models.DateTimeField(auto_now_add=True)
-    data_atualizacao = models.DateTimeField(auto_now=True)
+class Nota(models.Model):
+    tipo = models.CharField(max_length=10, verbose_name='tipo')
+    nome = models.CharField(max_length=100, verbose_name='nome')
+    linguagem = models.CharField(max_length=10, verbose_name='linguagem')
+    descricao = models.TextField(verbose_name='descricao')
+    exemplo = models.TextField(verbose_name='exemplo')
+    palavraChave = models.TextField(verbose_name='palavra chave')
+    dataCriacao = models.DateTimeField(verbose_name='data de criacao')
+    dataEdicao = models.DateTimeField(verbose_name='data de edicao')
 
     def __str__(self):
         return self.nome
-
-    @property
-    def tipo_badge(self):
-        # Retorna a classe Bootstrap baseada no tipo
-        return {
-            'biblioteca': 'primary',
-            'função': 'success',
-            'classe': 'info',
-        }.get(self.tipo, 'secondary')
