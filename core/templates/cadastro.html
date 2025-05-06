@@ -3,7 +3,76 @@
 {% block title %}Code-Save - Cadastrar Item{% endblock %}
 
 {% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2>Cadastrar Novo Item</h2>
+                </div>
 
-  <h1>Cadastro</h1>
+                <form method="post" id="formCadastro">
+                    {% csrf_token %}  <!-- Proteção contra ataques CSRF -->
 
+                    <!-- Campo tipo -->
+                    <div class="mb-3">
+                        <label for="{{ form.tipo.id_for_label }}" class="form-label">Tipo *</label>
+                        <select class="form-select" id="tipo" name="tipo" required>
+                            <option value="" selected disabled>Selecione o tipo</option>
+                            <option value="Comando">Comando</option>
+                            <option value="Função">Função</option>
+                            <option value="Biblioteca">Biblioteca</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                    </div>
+
+                    <!-- Campo nome -->
+                    <div class="mb-3">
+                        <label for="{{ form.nome.id_for_label }}" class="form-label">Nome *</label>
+                        {{ form.nome }}
+                    </div>
+
+                    <!-- Campo linguagem (select dinâmico do banco) -->
+                    <div class="mb-3">
+                        <label for="{{ form.linguagem.id_for_label }}" class="form-label">Linguagem/Tecnologia</label>
+                        <select class="form-select" id="linguagem" name="linguagem" required>
+                            <option value="" selected disabled>Selecione a linguagem</option>
+                            {% for linguagem in linguagens %}
+                                <option value="{{ linguagem.id }}">{{ linguagem.nome }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Campo descrição -->
+                    <div class="mb-3">
+                        <label for="{{ form.descricao.id_for_label }}" class="form-label">Descrição *</label>
+                        {{ form.descricao }}
+                    </div>
+
+                    <!-- Campo exemplo -->
+                    <div class="mb-3">
+                        <label for="{{ form.exemplo.id_for_label }}" class="form-label">Exemplo de Uso</label>
+                        {{ form.exemplo }}
+                    </div>
+
+                    <!-- Campo palavra-chave -->
+                    <div class="mb-3">
+                        <label for="{{ form.palavraChave.id_for_label }}" class="form-label">Palavras-chave</label>
+                        {{ form.palavraChave }}
+                        <div class="form-text">As tags ajudam na busca (ex: `python`, `loop`...)</div>
+                    </div>
+
+                    <!-- Mostra ao usuário a data atual -->
+                    <p><strong>Data de criação:</strong> {{ data_criacao_preview|date:"d/m/Y H:i:s" }}</p>
+
+                    <!-- Botões de ação -->
+                    <div class="text-end mt-4">
+                        <a href="{% url 'core:index' %}" class="btn btn-secondary me-2">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
