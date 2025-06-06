@@ -149,5 +149,5 @@ def register(request):
 
 @login_required
 def profile(request):
-    profile = Profile.objects.get(user=request.user)
+    profile, _ = Profile.objects.get_or_create(user=request.user)
     return render(request, 'profile.html', {'profile': profile})
