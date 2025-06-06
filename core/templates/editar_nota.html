@@ -26,12 +26,15 @@
           </div>
           <div class="mb-3">
             <label for="{{ form.linguagem.id_for_label }}" class="form-label">Linguagem/Tecnologia</label>
-            <select class="form-select" id="linguagem" name="linguagem" required>
-              <option value="" disabled>Selecione a linguagem</option>
-              {% for linguagem in linguagens %}
-                <option value="{{ linguagem.id }}" {% if linguagem.id == form.instance.linguagem.id %}selected{% endif %}>{{ linguagem.nome }}</option>
-              {% endfor %}
-            </select>
+            <div class="input-group">
+              <select class="form-select" id="linguagem" name="linguagem" required>
+                <option value="" disabled>Selecione a linguagem</option>
+                {% for linguagem in linguagens %}
+                  <option value="{{ linguagem.id }}" {% if linguagem.id == form.instance.linguagem.id %}selected{% endif %}>{{ linguagem.nome }}</option>
+                {% endfor %}
+              </select>
+              <a href="{% url 'core:adicionar_linguagem' %}" class="btn btn-outline-secondary" title="Adicionar linguagem">+</a>
+            </div>
           </div>
           <div class="mb-3">
             <label for="{{ form.descricao.id_for_label }}" class="form-label">Descrição *</label>
