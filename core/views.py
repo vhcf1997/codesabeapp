@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
-from .forms import NotaForm
+from .forms import NotaForm, LinguagemForm
 from django.utils.timezone import now
 from .models import Linguagem, Nota
 
@@ -109,3 +109,15 @@ def excluir_nota(request, pk):
         nota.delete()
         return redirect('core:lista_notas')
     return redirect('core:lista_notas')
+
+
+def adicionar_linguagem(request):
+    if request.method == 'POST':
+        form = LinguagemForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('core:cadastro')
+    else:
+        form = LinguagemForm()
+
+    return render(request, 'adicionar_linguagem.html', {'form': form})

@@ -11,5 +11,6 @@ urlpatterns = [
     path('notas/', views.lista_notas, name='lista_notas'),
     path('nota/<int:pk>/editar/', views.editar_nota, name='editar_nota'),
     path('nota/<int:pk>/excluir/', views.excluir_nota, name='excluir_nota'),
+    path('linguagem/nova/', views.adicionar_linguagem, name='adicionar_linguagem'),
 
 ]

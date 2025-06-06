@@ -7,12 +7,15 @@
     <input type="text" class="form-control" name="q" placeholder="Palavra-chave" value="{{ query }}">
   </div>
   <div class="col-md-3">
-    <select class="form-select" name="linguagem">
-      <option value="">Linguagem</option>
-      {% for ling in linguagens %}
-        <option value="{{ ling.id }}" {% if linguagem_id|default:'' == ling.id|stringformat:'s' %}selected{% endif %}>{{ ling.nome }}</option>
-      {% endfor %}
-    </select>
+    <div class="input-group">
+      <select class="form-select" name="linguagem">
+        <option value="">Linguagem</option>
+        {% for ling in linguagens %}
+          <option value="{{ ling.id }}" {% if linguagem_id|default:'' == ling.id|stringformat:'s' %}selected{% endif %}>{{ ling.nome }}</option>
+        {% endfor %}
+      </select>
+      <a href="{% url 'core:adicionar_linguagem' %}" class="btn btn-outline-secondary" title="Adicionar linguagem">+</a>
+    </div>
   </div>
   <div class="col-md-3">
     <select class="form-select" name="tipo">
