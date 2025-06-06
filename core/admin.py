@@ -1,5 +1,5 @@
 from django.contrib import admin
-from  .models import Nota, Linguagem
+from  .models import Nota, Linguagem, Profile
 
 class NotaAdmin(admin.ModelAdmin):
     list_display = ('tipo','nome', 'linguagem')
@@ -9,3 +9,4 @@ class LinguagemAdmin(admin.ModelAdmin):
 
 admin.site.register(Nota, NotaAdmin)
 admin.site.register(Linguagem, LinguagemAdmin)
+admin.site.register(Profile)
