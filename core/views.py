@@ -1,6 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
-from .forms import NotaForm, LinguagemForm
+from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView, LogoutView
+from .forms import NotaForm, LinguagemForm, UserRegistrationForm
+from .models import Profile
 from django.utils.timezone import now
 from .models import Linguagem, Nota
 
@@ -121,3 +125,29 @@ def adicionar_linguagem(request):
         form = LinguagemForm()
 
     return render(request, 'adicionar_linguagem.html', {'form': form})
+
+
+class UserLoginView(LoginView):
+    template_name = 'login.html'
+
+
+class UserLogoutView(LogoutView):
+    next_page = 'core:index'
+
+
+def register(request):
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('core:profile')
+    else:
+        form = UserRegistrationForm()
+    return render(request, 'register.html', {'form': form})
+
+
+@login_required
+def profile(request):
+    profile = Profile.objects.get(user=request.user)
+    return render(request, 'profile.html', {'profile': profile})

@@ -12,5 +12,9 @@ urlpatterns = [
     path('nota/<int:pk>/editar/', views.editar_nota, name='editar_nota'),
     path('nota/<int:pk>/excluir/', views.excluir_nota, name='excluir_nota'),
     path('linguagem/nova/', views.adicionar_linguagem, name='adicionar_linguagem'),
+    path('login/', views.UserLoginView.as_view(), name='login'),
+    path('logout/', views.UserLogoutView.as_view(), name='logout'),
+    path('register/', views.register, name='register'),
+    path('profile/', views.profile, name='profile'),
 
 ]

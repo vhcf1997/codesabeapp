@@ -1,5 +1,7 @@
 from django import forms
 from .models import Nota, Linguagem
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 class NotaForm(forms.ModelForm):
     class Meta:
@@ -47,3 +49,15 @@ class LinguagemForm(forms.ModelForm):
         widgets = {
             'nome': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+
+class UserRegistrationForm(UserCreationForm):
+    email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = User
+        fields = ["username", "email", "password1", "password2"]
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
