@@ -1,8 +1,44 @@
 {% extends "base.html" %}
-
-
+{% block title %}Pesquisar{% endblock %}
 {% block content %}
+<h2 class="mb-4">Pesquisar Notas</h2>
+<form method="get" class="row g-3 mb-4">
+  <div class="col-md-4">
+    <input type="text" class="form-control" name="q" placeholder="Palavra-chave" value="{{ query }}">
+  </div>
+  <div class="col-md-3">
+    <select class="form-select" name="linguagem">
+      <option value="">Linguagem</option>
+      {% for ling in linguagens %}
+        <option value="{{ ling.id }}" {% if linguagem_id|default:'' == ling.id|stringformat:'s' %}selected{% endif %}>{{ ling.nome }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-3">
+    <select class="form-select" name="tipo">
+      <option value="">Tipo</option>
+      <option value="Comando" {% if 'Comando' in tipos %}selected{% endif %}>Comando</option>
+      <option value="Função" {% if 'Função' in tipos %}selected{% endif %}>Função</option>
+      <option value="Biblioteca" {% if 'Biblioteca' in tipos %}selected{% endif %}>Biblioteca</option>
+      <option value="Outro" {% if 'Outro' in tipos %}selected{% endif %}>Outro</option>
+    </select>
+  </div>
+  <div class="col-md-2 d-grid">
+    <button type="submit" class="btn btn-primary">Buscar</button>
+  </div>
+</form>
 
-  <h1>Pesquisa</h1>
-
+{% if notas %}
+  {% for nota in notas %}
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title"><a href="{% url 'core:detalhe' nota.id %}">{{ nota.nome }}</a></h5>
+        <p class="card-text">{{ nota.descricao|truncatewords:25 }}</p>
+        <small class="text-muted">{{ nota.tipo }} - {{ nota.linguagem.nome }}</small>
+      </div>
+    </div>
+  {% endfor %}
+{% else %}
+  <p>Nenhum resultado encontrado.</p>
+{% endif %}
 {% endblock %}
