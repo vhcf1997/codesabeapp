@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Q
 from .forms import NotaForm
 from django.utils.timezone import now
 from .models import Linguagem, Nota
@@ -47,7 +48,36 @@ def detalhe(request, pk):
     return render(request, 'detalhe.html', context)
 
 def pesquisa(request):
-    return render(request, 'pesquisa.html')
+    notas = Nota.objects.all().order_by('-dataEdicao')
+    linguagens = Linguagem.objects.all()
+
+    query = request.GET.get('q', '')
+    tipos = request.GET.getlist('tipo')
+    linguagem_id = request.GET.get('linguagem', '')
+
+    if query:
+        notas = notas.filter(
+            Q(nome__icontains=query)
+            | Q(descricao__icontains=query)
+            | Q(exemplo__icontains=query)
+            | Q(palavraChave__icontains=query)
+        )
+
+    if tipos:
+        notas = notas.filter(tipo__in=tipos)
+
+    if linguagem_id:
+        notas = notas.filter(linguagem_id=linguagem_id)
+
+    context = {
+        'notas': notas,
+        'linguagens': linguagens,
+        'query': query,
+        'tipos': tipos,
+        'linguagem_id': linguagem_id,
+    }
+
+    return render(request, 'pesquisa.html', context)
 
 
 def lista_notas(request):
