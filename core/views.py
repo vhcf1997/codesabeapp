@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView
@@ -22,7 +22,10 @@ def cadastro(request):
         form = NotaForm(request.POST)
 
         if form.is_valid():
-            form.save()
+            nota = form.save(commit=False)
+            if request.user.is_authenticated:
+                nota.usuario = request.user
+            nota.save()
             print("Tipo", form.cleaned_data['tipo'])
             print("Nome", form.cleaned_data['nome'])
             return redirect('core:index')
@@ -153,3 +156,23 @@ def profile(request):
     profile, _ = Profile.objects.get_or_create(user=request.user)
 
     return render(request, 'profile.html', {'profile': profile})
+
+
+@login_required
+def dashboard(request):
+    notas = Nota.objects.filter(usuario=request.user)
+    total_notas = notas.count()
+    notas_por_linguagem = (
+        notas.values('linguagem__nome')
+        .annotate(qtde=Count('id'))
+        .order_by('-qtde')
+    )
+    ultimas_notas = notas.order_by('-dataEdicao')[:5]
+
+    context = {
+        'total_notas': total_notas,
+        'notas_por_linguagem': notas_por_linguagem,
+        'ultimas_notas': ultimas_notas,
+    }
+
+    return render(request, 'dashboard.html', context)
