@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+  <h2>Dashboard de {{ user.username }}</h2>
+  <p>Total de notas: {{ total_notas }}</p>
+
+  <h3>Notas por linguagem</h3>
+  <ul>
+    {% for item in notas_por_linguagem %}
+      <li>{{ item.linguagem__nome }}: {{ item.qtde }}</li>
+    {% empty %}
+      <li>Nenhuma nota registrada.</li>
+    {% endfor %}
+  </ul>
+
+  <h3>Últimas notas</h3>
+  <ul>
+    {% for nota in ultimas_notas %}
+      <li>
+        <a href="{% url 'core:detalhe' nota.id %}">{{ nota.nome }}</a>
+        - {{ nota.dataEdicao|date:'d/m/Y H:i' }}
+      </li>
+    {% empty %}
+      <li>Nenhuma nota registrada.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
