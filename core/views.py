@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import NotaForm
 from django.utils.timezone import now
 from .models import Linguagem, Nota
@@ -48,3 +48,34 @@ def detalhe(request, pk):
 
 def pesquisa(request):
     return render(request, 'pesquisa.html')
+
+
+def lista_notas(request):
+    notas = Nota.objects.all().order_by('-dataEdicao')
+    return render(request, 'lista_notas.html', {'notas': notas})
+
+
+def editar_nota(request, pk):
+    nota = get_object_or_404(Nota, pk=pk)
+    linguagens = Linguagem.objects.all()
+
+    if request.method == 'POST':
+        form = NotaForm(request.POST, instance=nota)
+        if form.is_valid():
+            form.save()
+            return redirect('core:lista_notas')
+    else:
+        form = NotaForm(instance=nota)
+
+    return render(request, 'editar_nota.html', {
+        'form': form,
+        'linguagens': linguagens,
+    })
+
+
+def excluir_nota(request, pk):
+    nota = get_object_or_404(Nota, pk=pk)
+    if request.method == 'POST':
+        nota.delete()
+        return redirect('core:lista_notas')
+    return redirect('core:lista_notas')

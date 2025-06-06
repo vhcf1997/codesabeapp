@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Editar Nota{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h2>Editar Nota</h2>
+        </div>
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="{{ form.tipo.id_for_label }}" class="form-label">Tipo *</label>
+            <select class="form-select" id="tipo" name="tipo" required>
+              <option value="" disabled>Selecione o tipo</option>
+              <option value="Comando" {% if form.instance.tipo == 'Comando' %}selected{% endif %}>Comando</option>
+              <option value="Função" {% if form.instance.tipo == 'Função' %}selected{% endif %}>Função</option>
+              <option value="Biblioteca" {% if form.instance.tipo == 'Biblioteca' %}selected{% endif %}>Biblioteca</option>
+              <option value="Outro" {% if form.instance.tipo == 'Outro' %}selected{% endif %}>Outro</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="{{ form.nome.id_for_label }}" class="form-label">Nome *</label>
+            {{ form.nome }}
+          </div>
+          <div class="mb-3">
+            <label for="{{ form.linguagem.id_for_label }}" class="form-label">Linguagem/Tecnologia</label>
+            <select class="form-select" id="linguagem" name="linguagem" required>
+              <option value="" disabled>Selecione a linguagem</option>
+              {% for linguagem in linguagens %}
+                <option value="{{ linguagem.id }}" {% if linguagem.id == form.instance.linguagem.id %}selected{% endif %}>{{ linguagem.nome }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="{{ form.descricao.id_for_label }}" class="form-label">Descrição *</label>
+            {{ form.descricao }}
+          </div>
+          <div class="mb-3">
+            <label for="{{ form.exemplo.id_for_label }}" class="form-label">Exemplo de Uso</label>
+            {{ form.exemplo }}
+          </div>
+          <div class="mb-3">
+            <label for="{{ form.palavraChave.id_for_label }}" class="form-label">Palavras-chave</label>
+            {{ form.palavraChave }}
+          </div>
+          <div class="text-end mt-4">
+            <a href="{% url 'core:lista_notas' %}" class="btn btn-secondary me-2">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
