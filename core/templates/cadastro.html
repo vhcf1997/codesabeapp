@@ -11,12 +11,11 @@
                     <h2>Cadastrar Novo Item</h2>
                 </div>
 
-                <form method="post" id="formCadastro">
+                <form method="post" id="formCadastro" class="needs-validation" novalidate>
                     {% csrf_token %}  <!-- Proteção contra ataques CSRF -->
 
                     <!-- Campo tipo -->
-                    <div class="mb-3">
-                        <label for="{{ form.tipo.id_for_label }}" class="form-label">Tipo *</label>
+                    <div class="form-floating mb-3">
                         <select class="form-select" id="tipo" name="tipo" required>
                             <option value="" selected disabled>Selecione o tipo</option>
                             <option value="Comando">Comando</option>
@@ -24,12 +23,13 @@
                             <option value="Biblioteca">Biblioteca</option>
                             <option value="Outro">Outro</option>
                         </select>
+                        <label for="tipo">Tipo *</label>
                     </div>
 
                     <!-- Campo nome -->
-                    <div class="mb-3">
-                        <label for="{{ form.nome.id_for_label }}" class="form-label">Nome *</label>
+                    <div class="form-floating mb-3">
                         {{ form.nome }}
+                        <label for="{{ form.nome.id_for_label }}">Nome *</label>
                     </div>
 
                     <!-- Campo linguagem (select dinâmico do banco) -->
@@ -47,23 +47,23 @@
                     </div>
 
                     <!-- Campo descrição -->
-                    <div class="mb-3">
-                        <label for="{{ form.descricao.id_for_label }}" class="form-label">Descrição *</label>
+                    <div class="form-floating mb-3">
                         {{ form.descricao }}
+                        <label for="{{ form.descricao.id_for_label }}">Descrição *</label>
                     </div>
 
                     <!-- Campo exemplo -->
-                    <div class="mb-3">
-                        <label for="{{ form.exemplo.id_for_label }}" class="form-label">Exemplo de Uso</label>
+                    <div class="form-floating mb-3">
                         {{ form.exemplo }}
+                        <label for="{{ form.exemplo.id_for_label }}">Exemplo de Uso</label>
                     </div>
 
                     <!-- Campo palavra-chave -->
-                    <div class="mb-3">
-                        <label for="{{ form.palavraChave.id_for_label }}" class="form-label">Palavras-chave</label>
+                    <div class="form-floating mb-3">
                         {{ form.palavraChave }}
-                        <div class="form-text">As tags ajudam na busca (ex: `python`, `loop`...)</div>
+                        <label for="{{ form.palavraChave.id_for_label }}">Palavras-chave</label>
                     </div>
+                    <div class="form-text mb-3">As tags ajudam na busca (ex: `python`, `loop`...)</div>
 
                     <!-- Mostra ao usuário a data atual -->
                     <p><strong>Data de criação:</strong> {{ data_criacao_preview|date:"d/m/Y H:i:s" }}</p>
