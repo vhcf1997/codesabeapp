@@ -127,3 +127,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Where to redirect users after successful login
+LOGIN_REDIRECT_URL = '/profile/'
+# URL used by the @login_required decorator for unauthenticated users
+LOGIN_URL = '/login/'
