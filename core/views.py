@@ -133,6 +133,18 @@ def adicionar_linguagem(request):
 class UserLoginView(LoginView):
     template_name = 'login.html'
 
+    def form_valid(self, form):
+        """Set session expiry based on the 'remember' checkbox."""
+        remember = self.request.POST.get("remember")
+        if remember:
+            # Keep the user logged in for two weeks
+            self.request.session.set_expiry(60 * 60 * 24 * 14)
+        else:
+            # Session expires when the browser closes
+            self.request.session.set_expiry(0)
+
+        return super().form_valid(form)
+
 
 class UserLogoutView(LogoutView):
     next_page = 'core:index'
