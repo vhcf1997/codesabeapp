@@ -38,7 +38,10 @@
                         <a class="nav-link" href="{% url 'core:profile' %}">{{ user.username }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'core:logout' %}">Sair</a>
+                        <form method="post" action="{% url 'core:logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="nav-link btn btn-link p-0">Sair</button>
+                        </form>
                     </li>
                     {% else %}
                     <li class="nav-item">
