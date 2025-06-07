@@ -375,7 +375,7 @@
 
                     <!-- Link Esqueceu Senha -->
                     <div class="forgot-password">
-                        <a href="#" onclick="showForgotPassword()">
+                        <a href="javascript:showForgotPassword()">
                             <i class="fas fa-key me-1"></i>
                             Esqueceu sua senha?
                         </a>
@@ -384,7 +384,7 @@
                     <!-- Link Registrar -->
                     <div class="register-link">
                         <p class="mb-2">Ainda não tem uma conta?</p>
-                        <a href="#" onclick="showRegister()">
+                        <a href="javascript:showRegister()">
                             <i class="fas fa-user-plus me-2"></i>
                             Criar conta grátis
                         </a>
@@ -464,13 +464,11 @@
 
     // Funções de navegação (adapte conforme suas URLs)
     function showForgotPassword() {
-        alert('Redirecionando para recuperação de senha...');
-        // window.location.href = '{% url "password_reset" %}';
+        window.location.href = '{% url "password_reset" %}';
     }
 
     function showRegister() {
-        alert('Redirecionando para cadastro...');
-        // window.location.href = '{% url "register" %}';
+        window.location.href = '{% url "core:register" %}';
     }
 
     // Efeito de parallax suave no fundo
