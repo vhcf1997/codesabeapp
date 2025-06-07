@@ -3,79 +3,358 @@
 {% block title %}Code-Save - Cadastrar Item{% endblock %}
 
 {% block content %}
-<div class="container">
+<style>
+    :root {
+        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --card-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        --hover-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        --border-radius: 16px;
+    }
+
+    .main-container {
+        padding: 2rem 0;
+        min-height: 80vh;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 20px;
+        margin: 2rem 0;
+    }
+
+    .form-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: none;
+        border-radius: var(--border-radius);
+        box-shadow: var(--card-shadow);
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+
+    .form-card:hover {
+        box-shadow: var(--hover-shadow);
+        transform: translateY(-5px);
+    }
+
+    .card-header {
+        background: var(--primary-gradient) !important;
+        border: none;
+        padding: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+        opacity: 0.3;
+    }
+
+    .card-header h2 {
+        margin: 0;
+        font-weight: 600;
+        font-size: 1.75rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .card-header .icon {
+        font-size: 3rem;
+        opacity: 0.2;
+        position: absolute;
+        right: 2rem;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .card-body {
+        padding: 2.5rem;
+    }
+
+    .form-floating {
+        margin-bottom: 1.5rem;
+        position: relative;
+    }
+
+    .form-floating > .form-control,
+    .form-floating > .form-select {
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.8);
+    }
+
+    .form-floating > .form-control:focus,
+    .form-floating > .form-select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        background: white;
+    }
+
+    .form-floating > label {
+        font-weight: 500;
+        color: #6c757d;
+    }
+
+    .input-group {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .input-group .form-select {
+        border: 2px solid #e9ecef;
+        border-right: none;
+        transition: all 0.3s ease;
+    }
+
+    .input-group .btn {
+        border: 2px solid #e9ecef;
+        border-left: none;
+        background: var(--secondary-gradient);
+        color: white;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .input-group .btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .form-text {
+        color: #6c757d;
+        font-size: 0.875rem;
+        margin-top: -0.5rem;
+        margin-bottom: 1rem;
+        padding-left: 0.75rem;
+    }
+
+    .creation-date {
+        background: linear-gradient(135deg, #e8f5e8 0%, #f0f8ff 100%);
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        border-left: 4px solid #28a745;
+        margin-bottom: 2rem;
+    }
+
+    .creation-date strong {
+        color: #155724;
+    }
+
+    .btn-group-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+        margin-top: 2rem;
+    }
+
+    .btn {
+        padding: 0.75rem 2rem;
+        border-radius: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        border: none;
+    }
+
+    .btn-primary {
+        background: var(--primary-gradient);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        box-shadow: 0 4px 15px rgba(108, 117, 125, 0.4);
+    }
+
+    .btn-secondary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(108, 117, 125, 0.6);
+        background: #5a6268;
+    }
+
+    .field-icon {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6c757d;
+        z-index: 10;
+        pointer-events: none;
+    }
+
+    /* Animações */
+    .form-floating:hover .form-control,
+    .form-floating:hover .form-select {
+        border-color: #667eea;
+        background: white;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .main-container {
+            margin: 1rem 0;
+            padding: 1rem 0;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .btn-group-actions {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+    }
+</style>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+<div class="container main-container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h2>Cadastrar Novo Item</h2>
+        <div class="col-xl-8 col-lg-10">
+            <div class="card form-card">
+                <div class="card-header text-white">
+                    <h2><i class="fas fa-plus-circle me-3"></i>Cadastrar Novo Item</h2>
+                    <i class="fas fa-code icon"></i>
                 </div>
 
-                <form method="post" id="formCadastro" class="needs-validation" novalidate>
-                    {% csrf_token %}  <!-- Proteção contra ataques CSRF -->
+                <div class="card-body">
+                    <form method="post" id="formCadastro" class="needs-validation" novalidate>
+                        {% csrf_token %}
 
-                    <!-- Campo tipo -->
-                    <div class="form-floating mb-3">
-                        <select class="form-select" id="tipo" name="tipo" required>
-                            <option value="" selected disabled>Selecione o tipo</option>
-                            <option value="Comando">Comando</option>
-                            <option value="Função">Função</option>
-                            <option value="Biblioteca">Biblioteca</option>
-                            <option value="Outro">Outro</option>
-                        </select>
-                        <label for="tipo">Tipo *</label>
-                    </div>
-
-                    <!-- Campo nome -->
-                    <div class="form-floating mb-3">
-                        {{ form.nome }}
-                        <label for="{{ form.nome.id_for_label }}">Nome *</label>
-                    </div>
-
-                    <!-- Campo linguagem (select dinâmico do banco) -->
-                    <div class="mb-3">
-                        <label for="{{ form.linguagem.id_for_label }}" class="form-label">Linguagem/Tecnologia</label>
-                        <div class="input-group">
-                            <select class="form-select" id="linguagem" name="linguagem" required>
-                                <option value="" selected disabled>Selecione a linguagem</option>
-                                {% for linguagem in linguagens %}
-                                    <option value="{{ linguagem.id }}">{{ linguagem.nome }}</option>
-                                {% endfor %}
+                        <!-- Campo tipo -->
+                        <div class="form-floating">
+                            <select class="form-select" id="tipo" name="tipo" required>
+                                <option value="" selected disabled>Selecione o tipo</option>
+                                <option value="Comando">📝 Comando</option>
+                                <option value="Função">⚡ Função</option>
+                                <option value="Biblioteca">📚 Biblioteca</option>
+                                <option value="Outro">🔧 Outro</option>
                             </select>
-                            <a href="{% url 'core:adicionar_linguagem' %}" class="btn btn-outline-secondary" title="Adicionar linguagem">+</a>
+                            <label for="tipo">Tipo *</label>
+                            <i class="fas fa-tag field-icon"></i>
                         </div>
-                    </div>
 
-                    <!-- Campo descrição -->
-                    <div class="form-floating mb-3">
-                        {{ form.descricao }}
-                        <label for="{{ form.descricao.id_for_label }}">Descrição *</label>
-                    </div>
+                        <!-- Campo nome -->
+                        <div class="form-floating">
+                            {{ form.nome }}
+                            <label for="{{ form.nome.id_for_label }}">Nome *</label>
+                            <i class="fas fa-signature field-icon"></i>
+                        </div>
 
-                    <!-- Campo exemplo -->
-                    <div class="form-floating mb-3">
-                        {{ form.exemplo }}
-                        <label for="{{ form.exemplo.id_for_label }}">Exemplo de Uso</label>
-                    </div>
+                        <!-- Campo linguagem -->
+                        <div class="mb-3">
+                            <label for="{{ form.linguagem.id_for_label }}" class="form-label fw-semibold">
+                                <i class="fas fa-code me-2"></i>Linguagem/Tecnologia *
+                            </label>
+                            <div class="input-group">
+                                <select class="form-select" id="linguagem" name="linguagem" required>
+                                    <option value="" selected disabled>Selecione a linguagem</option>
+                                    {% for linguagem in linguagens %}
+                                        <option value="{{ linguagem.id }}">{{ linguagem.nome }}</option>
+                                    {% endfor %}
+                                </select>
+                                <a href="{% url 'core:adicionar_linguagem' %}" class="btn" title="Adicionar linguagem">
+                                    <i class="fas fa-plus"></i>
+                                </a>
+                            </div>
+                        </div>
 
-                    <!-- Campo palavra-chave -->
-                    <div class="form-floating mb-3">
-                        {{ form.palavraChave }}
-                        <label for="{{ form.palavraChave.id_for_label }}">Palavras-chave</label>
-                    </div>
-                    <div class="form-text mb-3">As tags ajudam na busca (ex: `python`, `loop`...)</div>
+                        <!-- Campo descrição -->
+                        <div class="form-floating">
+                            {{ form.descricao }}
+                            <label for="{{ form.descricao.id_for_label }}">Descrição *</label>
+                            <i class="fas fa-align-left field-icon"></i>
+                        </div>
 
-                    <!-- Mostra ao usuário a data atual -->
-                    <p><strong>Data de criação:</strong> {{ data_criacao_preview|date:"d/m/Y H:i:s" }}</p>
+                        <!-- Campo exemplo -->
+                        <div class="form-floating">
+                            {{ form.exemplo }}
+                            <label for="{{ form.exemplo.id_for_label }}">Exemplo de Uso</label>
+                            <i class="fas fa-code field-icon"></i>
+                        </div>
 
-                    <!-- Botões de ação -->
-                    <div class="text-end mt-4">
-                        <a href="{% url 'core:index' %}" class="btn btn-secondary me-2">Cancelar</a>
-                        <button type="submit" class="btn btn-primary">Salvar</button>
-                    </div>
-                </form>
+                        <!-- Campo palavra-chave -->
+                        <div class="form-floating">
+                            {{ form.palavraChave }}
+                            <label for="{{ form.palavraChave.id_for_label }}">Palavras-chave</label>
+                            <i class="fas fa-hashtag field-icon"></i>
+                        </div>
+                        <div class="form-text">
+                            <i class="fas fa-lightbulb me-1"></i>
+                            As tags ajudam na busca (ex: python, loop, função...)
+                        </div>
+
+                        <!-- Data de criação -->
+                        <div class="creation-date">
+                            <i class="fas fa-calendar-check me-2"></i>
+                            <strong>Data de criação:</strong> {{ data_criacao_preview|date:"d/m/Y H:i:s" }}
+                        </div>
+
+                        <!-- Botões de ação -->
+                        <div class="btn-group-actions">
+                            <a href="{% url 'core:index' %}" class="btn btn-secondary">
+                                <i class="fas fa-times me-2"></i>Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Salvar Item
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    // Validação e animações do formulário
+    const form = document.getElementById('formCadastro');
+
+    form.addEventListener('submit', function(event) {
+        if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+    });
+
+    // Animações nos campos
+    const inputs = document.querySelectorAll('.form-control, .form-select');
+    inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            this.parentElement.style.transform = 'scale(1.02)';
+        });
+
+        input.addEventListener('blur', function() {
+            this.parentElement.style.transform = 'scale(1)';
+        });
+    });
+
+    // Auto-resize para textareas
+    const textareas = document.querySelectorAll('textarea');
+    textareas.forEach(textarea => {
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = this.scrollHeight + 'px';
+        });
+    });
+</script>
+
 {% endblock %}
